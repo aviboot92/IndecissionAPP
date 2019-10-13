@@ -1,0 +1,14 @@
+const user38 = {
+    name: 'Andrew',
+    cities: ['Philadelphia', 'New York', 'Dublin'],
+    printPlacesLived() {
+        console.log(this)
+      return this.cities.map((city) => this.name + ' has lived in ' + city);
+    },
+    test: (self) => {
+        var test2 = self;
+        console.log(this);
+        console.log(test2)
+      return this;
+    }
+  }; 
