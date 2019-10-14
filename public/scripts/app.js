@@ -19,23 +19,38 @@ var Counter = function (_React$Component) {
         _this.decreementBtn = _this.decreementBtn.bind(_this);
         _this.incrementBtn = _this.incrementBtn.bind(_this);
         _this.reset = _this.reset.bind(_this);
+        _this.state = {
+            count: 0
+        };
         return _this;
     }
 
     _createClass(Counter, [{
         key: "incrementBtn",
         value: function incrementBtn() {
-            console.log("Increem");
+            this.setState(function (prevState) {
+                return {
+                    count: prevState.count + 1
+                };
+            });
         }
     }, {
         key: "decreementBtn",
         value: function decreementBtn() {
-            console.log("Dec");
+            this.setState(function (prevState) {
+                return {
+                    count: prevState.count - 1
+                };
+            });
         }
     }, {
         key: "reset",
         value: function reset() {
-            console.log("Reset");
+            this.setState(function (prevState) {
+                return {
+                    count: 0
+                };
+            });
         }
     }, {
         key: "render",
@@ -58,7 +73,7 @@ var Counter = function (_React$Component) {
                         React.createElement(
                             "b",
                             null,
-                            "score"
+                            this.state.count
                         )
                     )
                 ),

@@ -4,21 +4,36 @@ class Counter extends React.Component {
         this.decreementBtn = this.decreementBtn.bind(this);
         this.incrementBtn = this.incrementBtn.bind(this);
         this.reset = this.reset.bind(this);
+        this.state = {
+            count : 0
+        }
     }
     incrementBtn(){
-        console.log("Increem");
+        this.setState((prevState)=>{
+            return{
+                count : prevState.count + 1 
+            }
+        })
     }
     decreementBtn(){
-        console.log("Dec");
+        this.setState((prevState)=>{
+            return{
+                count : prevState.count - 1 
+            }
+        })
     }
     reset(){
-        console.log("Reset");
+        this.setState((prevState)=>{
+            return{
+                count : 0 
+            }
+        })
     }
     render() {
         return (
             <div>
                 <h1>Counter</h1>
-                <h2>Count: <span id="count"><b>score</b></span></h2>
+                <h2>Count: <span id="count"><b>{this.state.count}</b></span></h2>
                 <hr />
                 <button onClick={this.incrementBtn}>+1 plus</button>
                 <button onClick={this.decreementBtn}>-1 Minus</button>
