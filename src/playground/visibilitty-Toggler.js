@@ -1,31 +1,30 @@
-// alert("Hi");
-
-const detail = "Hi how are you?";
-let show = false;
-const showDetails = () => {
-    // console.log("You have clicked");
-    show = !show;
-    render();
+class Toggler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showDetails: false,
+        }
+        this.onSubmitBtn = this.onSubmitBtn.bind(this);
+    }
+    onSubmitBtn() {
+            this.setState((prevState) => {
+                return {
+                    showDetails: !prevState.showDetails,
+                }
+            });    
+    }
+    render() {
+        return (
+            <div>
+                <h1>Visibility Toggler</h1>
+                <hr></hr>
+                <button onClick={this.onSubmitBtn}>{!this.state.showDetails ? "SHow Detailts" :"Hide Details"}</button>
+                {this.state.showDetails && <p>Hi I am AVI</p>}
+            </div>
+        )
+    }
 }
 
-function render() {
-    var template = (
-        <div>
-            <h1>Visibility Toggler</h1>
-            <hr></hr>
-            <button onClick={showDetails}>{!show ? "Show Details" : "Hide Details"}</button>
-            <br></br>
-            {show && (
-                <div>
-                    <p>{detail}</p>
-                </div>
-            )}
-        </div>
-    );
+ReactDOM.render(<Toggler />, document.getElementById("app"));
 
-    const appRoot = document.getElementById("app");
 
-    ReactDOM.render(template, appRoot);
-}
-
-render();
