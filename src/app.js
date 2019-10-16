@@ -10,6 +10,7 @@ class IndecisionApp extends React.Component {
         // we need to bind "this" to handleAddOption because we have sent definition as prop value and at 'Instance' when function invoked this refers to undefined 
         this.handleAddOption = this.handleAddOption.bind(this);
         this.handleRemoveAll = this.handleRemoveAll.bind(this);
+        this.handleDeleteOption = this.handleDeleteOption.bind(this);
         // Example call, Here this uses class instance.
         this.sayHi();
     }
@@ -47,6 +48,11 @@ class IndecisionApp extends React.Component {
     handleRemoveAll() {
         this.setState(() => ({ options: [] }))
     }
+    handleDeleteOption(optionToRemove) {
+        this.setState((prevState)=>({
+                options: prevState.options.filter((option)=> option !== optionToRemove)
+            }));
+    }
 
     render() {
         return (
@@ -58,7 +64,8 @@ class IndecisionApp extends React.Component {
                 <Options
                     hasOptions={this.hasOptions()}
                     handleRemoveAll={this.handleRemoveAll}
-                    options={this.state.options} />
+                    options={this.state.options}
+                    handleDeleteOption={this.handleDeleteOption} />
                 <AddOption handleAddOption={this.handleAddOption} />
             </div>
         )
@@ -129,7 +136,10 @@ const Options = (props) => {
             <ol>
                 {
                     props.options.map((option, i) => {
-                        return <Option key={option} option={option} />
+                        return <Option
+                            key={option}
+                            option={option}
+                            handleDeleteOption={props.handleDeleteOption} />
                     })
                 }
             </ol>
@@ -140,7 +150,8 @@ const Options = (props) => {
 const Option = (props) => {
     return (
         <li>
-            Option: {props.option}
+            Option: {props.option} 
+            <button onClick={(e)=>props.handleDeleteOption(props.option)}>Remove</button>
         </li>
     )
 }

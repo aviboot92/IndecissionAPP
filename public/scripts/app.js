@@ -24,6 +24,7 @@ var IndecisionApp = function (_React$Component) {
         // we need to bind "this" to handleAddOption because we have sent definition as prop value and at 'Instance' when function invoked this refers to undefined 
         _this.handleAddOption = _this.handleAddOption.bind(_this);
         _this.handleRemoveAll = _this.handleRemoveAll.bind(_this);
+        _this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
         // Example call, Here this uses class instance.
         _this.sayHi();
         return _this;
@@ -81,6 +82,17 @@ var IndecisionApp = function (_React$Component) {
             });
         }
     }, {
+        key: "handleDeleteOption",
+        value: function handleDeleteOption(optionToRemove) {
+            this.setState(function (prevState) {
+                return {
+                    options: prevState.options.filter(function (option) {
+                        return option !== optionToRemove;
+                    })
+                };
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -93,7 +105,8 @@ var IndecisionApp = function (_React$Component) {
                 React.createElement(Options, {
                     hasOptions: this.hasOptions(),
                     handleRemoveAll: this.handleRemoveAll,
-                    options: this.state.options }),
+                    options: this.state.options,
+                    handleDeleteOption: this.handleDeleteOption }),
                 React.createElement(AddOption, { handleAddOption: this.handleAddOption })
             );
         }
@@ -160,7 +173,6 @@ var AddOption = function (_React$Component2) {
         value: function handleAddOption(event) {
             event.preventDefault();
             var newOption = event.target.elements.addOption.value.trim();
-
             var error = this.props.handleAddOption(newOption);
             this.setState(function () {
                 return { error: error };
@@ -225,7 +237,10 @@ var Options = function Options(props) {
             "ol",
             null,
             props.options.map(function (option, i) {
-                return React.createElement(Option, { key: option, option: option });
+                return React.createElement(Option, {
+                    key: option,
+                    option: option,
+                    handleDeleteOption: props.handleDeleteOption });
             })
         )
     );
@@ -236,7 +251,14 @@ var Option = function Option(props) {
         "li",
         null,
         "Option: ",
-        props.option
+        props.option,
+        React.createElement(
+            "button",
+            { onClick: function onClick(e) {
+                    return props.handleDeleteOption(props.option);
+                } },
+            "Remove"
+        )
     );
 };
 
