@@ -5,7 +5,7 @@ class Counter extends React.Component {
         this.incrementBtn = this.incrementBtn.bind(this);
         this.reset = this.reset.bind(this);
         this.state = {
-            count : 0
+            count : this.props.count
         }
     }
     incrementBtn(){
@@ -41,6 +41,9 @@ class Counter extends React.Component {
             </div>
         )
     }
+}
+Counter.defaultProps ={
+    count : 0
 }
 
 ReactDOM.render(<Counter />, document.getElementById("app"));

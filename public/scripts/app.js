@@ -18,8 +18,8 @@ var IndecisionApp = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
         _this.state = {
-            options: []
-            // We need to bind "this" to handlePick because in tis is used in const declaration
+            options: props.options
+            // We need to bind "this" to handlePick because in "this" is used in const declaration
         };_this.handlePick = _this.handlePick.bind(_this);
         // we need to bind "this" to handleAddOption because we have sent definition as prop value and at 'Instance' when function invoked this refers to undefined 
         _this.handleAddOption = _this.handleAddOption.bind(_this);
@@ -70,18 +70,14 @@ var IndecisionApp = function (_React$Component) {
             }
 
             this.setState(function (prevState) {
-                return {
-                    options: prevState.options.concat(option)
-                };
+                return { options: prevState.options.concat(option) };
             });
         }
     }, {
         key: "handleRemoveAll",
         value: function handleRemoveAll() {
             this.setState(function () {
-                return {
-                    options: []
-                };
+                return { options: [] };
             });
         }
     }, {
@@ -90,21 +86,25 @@ var IndecisionApp = function (_React$Component) {
             return React.createElement(
                 "div",
                 null,
-                React.createElement(Header, { title: "Indecision APP" }),
+                React.createElement(Header, { subTitle: "Put your hands in the life of COMPUTER" }),
                 React.createElement(Action, {
                     handlePick: this.handlePick,
                     hasOptions: this.hasOptions() }),
-                React.createElement(AddOption, { handleAddOption: this.handleAddOption }),
                 React.createElement(Options, {
                     hasOptions: this.hasOptions(),
                     handleRemoveAll: this.handleRemoveAll,
-                    options: this.state.options })
+                    options: this.state.options }),
+                React.createElement(AddOption, { handleAddOption: this.handleAddOption })
             );
         }
     }]);
 
     return IndecisionApp;
 }(React.Component);
+
+IndecisionApp.defaultProps = {
+    options: []
+};
 
 var Header = function Header(props) {
     return React.createElement(
@@ -115,12 +115,16 @@ var Header = function Header(props) {
             null,
             props.title
         ),
-        React.createElement(
+        props.subTitle && React.createElement(
             "h3",
             null,
-            "Put your hands in the life of COMPUTER"
+            props.subTitle
         )
     );
+};
+
+Header.defaultProps = {
+    title: "Indecision APP"
 };
 
 var Action = function Action(props) {
@@ -172,7 +176,13 @@ var AddOption = function (_React$Component2) {
                 this.state.error && React.createElement(
                     "p",
                     null,
-                    this.state.error
+                    React.createElement(
+                        "b",
+                        null,
+                        "!!!",
+                        this.state.error,
+                        "!!!"
+                    )
                 ),
                 React.createElement(
                     "form",
