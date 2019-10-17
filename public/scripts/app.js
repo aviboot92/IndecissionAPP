@@ -45,6 +45,40 @@ var IndecisionApp = function (_React$Component) {
             console.log("Hi");
             this.sayHallo();
         }
+        // componentDidMOunt is a React Lifecycle method Triggers when component loads for the first Time
+
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            try {
+                var json = localStorage.getItem("options");
+                var options = JSON.parse(json);
+                if (options) {
+                    this.setState(function (prevState) {
+                        return { options: options };
+                    });
+                }
+            } catch (e) {
+                // Do Nothing
+            }
+        }
+        // componentDidUpdate is a React Lifecycle method will be triggered when component gets updated at any givrn point of time. And also it will have access to the prevPorps and prevState as arguments
+
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (prevState.options.length !== this.state.length) {
+                var json = JSON.stringify(this.state.options);
+                localStorage.setItem('options', json);
+            }
+        }
+        // componentWillUnmount is a React Lifecycle method will be triggered when component gets deleted
+
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            console.log("Componet will unmount");
+        }
         // We didn't bind "this" to hasOption because it is invoked class Instance itself. Refer above example for more clarity
 
     }, {
@@ -114,6 +148,8 @@ var IndecisionApp = function (_React$Component) {
 
     return IndecisionApp;
 }(React.Component);
+// settinng Default prop value of options
+
 
 IndecisionApp.defaultProps = {
     options: []
@@ -135,7 +171,7 @@ var Header = function Header(props) {
         )
     );
 };
-
+// settinng Default prop value of title
 Header.defaultProps = {
     title: "Indecision APP"
 };
@@ -177,7 +213,9 @@ var AddOption = function (_React$Component2) {
             this.setState(function () {
                 return { error: error };
             });
-            event.target.elements.addOption.value = "";
+            if (!error) {
+                event.target.elements.addOption.value = "";
+            }
         }
     }, {
         key: "render",
@@ -227,6 +265,11 @@ var Options = function Options(props) {
             "button",
             { disabled: !props.hasOptions, onClick: props.handleRemoveAll },
             "Remove ALL"
+        ),
+        props.options.length === 0 && React.createElement(
+            "p",
+            null,
+            "Please enter options to get started"
         ),
         React.createElement(
             "h3",

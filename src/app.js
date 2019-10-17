@@ -23,6 +23,29 @@ class IndecisionApp extends React.Component {
         console.log("Hi");
         this.sayHallo();
     }
+    // componentDidMOunt is a React Lifecycle method Triggers when component loads for the first Time
+    componentDidMount() {
+        try {
+            const json = localStorage.getItem("options");
+            const options = JSON.parse(json);
+            if(options){
+                this.setState((prevState) => ({ options }));
+            }
+        } catch (e) {
+            // Do Nothing
+        }
+    }
+    // componentDidUpdate is a React Lifecycle method will be triggered when component gets updated at any givrn point of time. And also it will have access to the prevPorps and prevState as arguments
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.options.length !== this.state.length) {
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem('options', json);
+        }
+    }
+    // componentWillUnmount is a React Lifecycle method will be triggered when component gets deleted
+    componentWillUnmount() {
+        console.log("Componet will unmount");
+    }
     // We didn't bind "this" to hasOption because it is invoked class Instance itself. Refer above example for more clarity
     hasOptions() {
         if (this.state.options.length > 0) {
@@ -49,9 +72,9 @@ class IndecisionApp extends React.Component {
         this.setState(() => ({ options: [] }))
     }
     handleDeleteOption(optionToRemove) {
-        this.setState((prevState)=>({
-                options: prevState.options.filter((option)=> option !== optionToRemove)
-            }));
+        this.setState((prevState) => ({
+            options: prevState.options.filter((option) => option !== optionToRemove)
+        }));
     }
 
     render() {
@@ -71,6 +94,7 @@ class IndecisionApp extends React.Component {
         )
     }
 }
+// settinng Default prop value of options
 IndecisionApp.defaultProps = {
     options: []
 }
@@ -81,7 +105,7 @@ const Header = (props) => (
         {props.subTitle && <h3>{props.subTitle}</h3>}
     </div>
 );
-
+// settinng Default prop value of title
 Header.defaultProps = {
     title: "Indecision APP"
 }
@@ -109,7 +133,9 @@ class AddOption extends React.Component {
         const newOption = event.target.elements.addOption.value.trim();
         const error = this.props.handleAddOption(newOption);
         this.setState(() => ({ error }));
-        event.target.elements.addOption.value = "";
+        if (!error) {
+            event.target.elements.addOption.value = "";
+        }
     }
 
     render() {
@@ -132,6 +158,7 @@ const Options = (props) => {
     return (
         <div>
             <button disabled={!props.hasOptions} onClick={props.handleRemoveAll}>Remove ALL</button>
+            {props.options.length === 0 && <p>Please enter options to get started</p>}
             <h3>Here are our options below:-</h3>
             <ol>
                 {
@@ -150,8 +177,8 @@ const Options = (props) => {
 const Option = (props) => {
     return (
         <li>
-            Option: {props.option} 
-            <button onClick={(e)=>props.handleDeleteOption(props.option)}>Remove</button>
+            Option: {props.option}
+            <button onClick={(e) => props.handleDeleteOption(props.option)}>Remove</button>
         </li>
     )
 }
