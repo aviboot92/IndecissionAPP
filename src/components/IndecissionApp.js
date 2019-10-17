@@ -3,20 +3,22 @@ import Options from './Options';
 import AddOption from './AddOption';
 import Action from './Action';
 import Header from './Header';
+import OptionModal from './OptionModal';
 
 export default class IndecisionApp extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
     state = {
-        options: this.props.options
+        options: this.props.options,
+        selectedOption: this.props.selectedOption
     }
     // componentDidMOunt is a React Lifecycle method Triggers when component loads for the first Time
     componentDidMount() {
         try {
             const json = localStorage.getItem("options");
             const options = JSON.parse(json);
-            if(options){
+            if (options) {
                 this.setState((prevState) => ({ options }));
             }
         } catch (e) {
@@ -35,18 +37,25 @@ export default class IndecisionApp extends React.Component {
         console.log("Componet will unmount");
     }
     // We didn't bind "this" to hasOption because it is invoked class Instance itself. Refer above example for more clarity
-    hasOptions = () =>{
+    hasOptions = () => {
         if (this.state.options.length > 0) {
             return true;
         }
         return false;
     }
-    handlePick = () =>{
+    handlePick = () => {
         const randomNum = Math.floor(Math.random() * this.state.options.length);
         const option = this.state.options[randomNum];
-        alert(option);
+        this.setState(() => {
+            return {
+                selectedOption: option
+            }
+        })
     }
-    handleAddOption = (option) =>{
+    handleModalButton = () => {
+        this.setState(()=> ({selectedOption : this.props.selectedOption}))
+    }
+    handleAddOption = (option) => {
         if (!option) {
             return "Please enter right value";
         } else if (this.state.options.indexOf(option) > -1) {
@@ -57,10 +66,10 @@ export default class IndecisionApp extends React.Component {
             { options: prevState.options.concat(option) }
         ));
     }
-    handleRemoveAll = () =>{
+    handleRemoveAll = () => {
         this.setState(() => ({ options: [] }))
     }
-    handleDeleteOption = (optionToRemove) =>{
+    handleDeleteOption = (optionToRemove) => {
         this.setState((prevState) => ({
             options: prevState.options.filter((option) => option !== optionToRemove)
         }));
@@ -79,11 +88,15 @@ export default class IndecisionApp extends React.Component {
                     options={this.state.options}
                     handleDeleteOption={this.handleDeleteOption} />
                 <AddOption handleAddOption={this.handleAddOption} />
+                <OptionModal
+                    handleModalButton={this.handleModalButton}
+                    selectedOption={this.state.selectedOption} />
             </div>
         )
     }
 }
 // settinng Default prop value of options
 IndecisionApp.defaultProps = {
-    options: []
+    options: [],
+    selectedOption: undefined
 }
