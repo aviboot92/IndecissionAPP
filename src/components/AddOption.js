@@ -1,15 +1,11 @@
 import React from 'react';
 
 export default class AddOption extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: undefined
-        }
-        // I have to Bind "this" because I am just passing function definition to onSubmit event listener in the form 
-        this.handleAddOption = this.handleAddOption.bind(this);
+    state = {
+        error: undefined
     }
-    handleAddOption(event) {
+
+    handleAddOption = (event)=> {
         event.preventDefault();
         const newOption = event.target.elements.addOption.value.trim();
         const error = this.props.handleAddOption(newOption);
