@@ -53,7 +53,7 @@ export default class IndecisionApp extends React.Component {
         })
     }
     handleModalButton = () => {
-        this.setState(()=> ({selectedOption : this.props.selectedOption}))
+        this.setState(() => ({ selectedOption: this.props.selectedOption }))
     }
     handleAddOption = (option) => {
         if (!option) {
@@ -79,15 +79,17 @@ export default class IndecisionApp extends React.Component {
         return (
             <div>
                 <Header subTitle="Put your hands in the life of COMPUTER" />
-                <Action
-                    handlePick={this.handlePick}
-                    hasOptions={this.hasOptions()} />
-                <Options
-                    hasOptions={this.hasOptions()}
-                    handleRemoveAll={this.handleRemoveAll}
-                    options={this.state.options}
-                    handleDeleteOption={this.handleDeleteOption} />
-                <AddOption handleAddOption={this.handleAddOption} />
+                <div className="container">
+                    <Action
+                        handlePick={this.handlePick}
+                        hasOptions={this.hasOptions()} />
+                    <Options
+                        hasOptions={this.hasOptions()}
+                        handleRemoveAll={this.handleRemoveAll}
+                        options={this.state.options}
+                        handleDeleteOption={this.handleDeleteOption} />
+                    <AddOption handleAddOption={this.handleAddOption} />
+                </div>
                 <OptionModal
                     handleModalButton={this.handleModalButton}
                     selectedOption={this.state.selectedOption} />
